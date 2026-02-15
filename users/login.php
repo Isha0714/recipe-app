@@ -3,20 +3,25 @@ session_start();
 include 'config/db.php';
 
 if(isset($_POST['login'])){
-    $email=$_POST['email'];
-    $password=$_POST['password'];
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = $_POST['password'];
 
-    $sql="SELECT * FROM users WHERE email='$email' AND role='user'";
-    $result=mysqli_query($conn,$sql);
+    $sql = "SELECT * FROM users WHERE email='$email' AND role='user'";
+    $result = mysqli_query($conn, $sql);
 
-    if(mysqli_num_rows($result)>0){
-        $user=mysqli_fetch_assoc($result);
-        if(password_verify($password,$user['password'])){
-            $_SESSION['user_id']=$user['id'];
-            $_SESSION['username']=$user['username'];
+    if(mysqli_num_rows($result) > 0){
+        $user = mysqli_fetch_assoc($result);
+        if(password_verify($password, $user['password'])){
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
             header("Location: index.php");
-        } else $error="Invalid password!";
-    } else $error="User not found!";
+            exit;
+        } else {
+            $error = "Invalid password!";
+        }
+    } else {
+        $error = "User not found!";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -31,6 +36,8 @@ if(isset($_POST['login'])){
         input[type=submit] { background:#ff6b6b; color:white; border:none; font-weight:bold; cursor:pointer; transition:0.3s; }
         input[type=submit]:hover { background:#ff4757; }
         p.error { color:red; }
+        a { color:#ff6b6b; text-decoration:none; }
+        a:hover { text-decoration:underline; }
     </style>
 </head>
 <body>
@@ -42,6 +49,7 @@ if(isset($_POST['login'])){
         <input type="password" name="password" placeholder="Password" required><br>
         <input type="submit" name="login" value="Login">
     </form>
+    <p>Don't have an account? <a href="register.php">Sign Up</a></p>
 </div>
 </body>
 </html>

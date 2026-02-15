@@ -51,6 +51,8 @@ nav div a{margin:5px 0;}
 <div>
     <a href="manage_users.php">Users</a>
     <a href="manage_recipes.php">Recipes</a>
+    <a href="manage_favorites.php">Favorites</a>
+    <a href="manage_ratings.php">Ratings</a>
     <a href="logout.php">Logout</a>
 </div>
 </nav>
